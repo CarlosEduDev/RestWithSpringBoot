@@ -1,5 +1,6 @@
 package br.com.erudio.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,7 +13,7 @@ import br.com.erudio.utils.NumberUtil;
 @RestController
 public class MathController {
 
-	@RequestMapping(value = "sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@GetMapping(value = "sum/{numberOne}/{numberTwo}")
 	public Double sum(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo){
 		if (!NumberUtil.isNumber(numberOne, numberTwo)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
@@ -20,7 +21,7 @@ public class MathController {
 		return MathUtil.sum(numberOne, numberTwo);
 	}
 	
-	@RequestMapping(value = "subtraction/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@GetMapping(value = "subtraction/{numberOne}/{numberTwo}")
 	public Double subtraction(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) {
 		if (!NumberUtil.isNumber(numberOne,numberTwo)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
@@ -29,7 +30,7 @@ public class MathController {
 	}
 	
 	
-	@RequestMapping(value = "multiplication/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@GetMapping(value = "multiplication/{numberOne}/{numberTwo}")
 	public Double multiplication(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) {
 		if (!NumberUtil.isNumber(numberOne,numberTwo)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
@@ -39,7 +40,7 @@ public class MathController {
 	
 	
 	
-	@RequestMapping(value = "division/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@GetMapping(value = "division/{numberOne}/{numberTwo}")
 	public Double division(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) {
 		if (!NumberUtil.isNumber(numberOne,numberTwo)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
@@ -48,7 +49,7 @@ public class MathController {
 	}
 	
 	
-	@RequestMapping(value = "mean/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	@GetMapping(value = "mean/{numberOne}/{numberTwo}")
 	public Double mean(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) {
 		if (!NumberUtil.isNumber(numberOne,numberTwo)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
@@ -57,7 +58,7 @@ public class MathController {
 	}
 	
 	
-	@RequestMapping(value = "squareRoot/{number}", method = RequestMethod.GET)
+	@GetMapping(value = "squareRoot/{number}")
 	public Double squareRoot(@PathVariable("number") String number) {
 		if (!NumberUtil.isNumber(number)) {
 			throw new UnsupportedMathOperationException("Please se a numeric value");
