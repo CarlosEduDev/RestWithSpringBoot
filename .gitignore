@@ -1,16 +1,5 @@
-<<<<<<< HEAD
-*target/
-
-*.classpath
-*.springBeans
-*.project
-*.settings/
-*.gradle/
-*build/
-=======
 *.classpath
 *.springBeans
 *.project
 *.settings
-.idea
->>>>>>> eac88207412c858e24765524f836286205b8afa1
+*.idea
