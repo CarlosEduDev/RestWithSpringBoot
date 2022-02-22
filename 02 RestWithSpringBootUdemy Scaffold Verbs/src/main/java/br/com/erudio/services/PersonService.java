@@ -1,60 +1,60 @@
 package br.com.erudio.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.erudio.model.Person;
+import br.com.erudio.converter.DozerConverter;
+import br.com.erudio.converter.custom.PersonConverter;
+import br.com.erudio.data.model.Person;
+import br.com.erudio.data.vo.PersonVO;
+import br.com.erudio.data.vo.v2.PersonVOV2;
+import br.com.erudio.exception.ResourceNotFoundException;
+import br.com.erudio.repository.PersonRepository;
 
 @Service
 public class PersonService {
+
+	@Autowired
+	PersonRepository repository;
 	
-	private final AtomicLong counter = new AtomicLong();
-	
-	
-	public Person create(Person person) {
-		return person;
-	}
-	
-	public Person update(Person person) {
-		return person;
-	}
-	 
-	public void delete(String id) {
-		
-	}
-	
-	
-	public Person findById(String id) {
-		Person person = new Person();
-		person.setId(counter.incrementAndGet());
-		person.setFirstName("Carlos");
-		person.setLastName("Eduardo");
-		person.setAddress("BA");
-		person.setGender("Male");
-		return person;
-	}
-	
-	public List<Person> findAll() {
-		List<Person> list = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			list.add(mockPerson(i));
-		}
-		return list;
+	@Autowired
+	private PersonConverter converter;
+
+	public PersonVO create(PersonVO person) {
+		Person entity = DozerConverter.parseObject(person, Person.class);
+		return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 	}
 
-	private Person mockPerson(int i) {
-		Person person = new Person();
-		person.setId(counter.incrementAndGet());
-		person.setFirstName("Person firstname" + i);
-		person.setLastName("person lastname"+i);
-		person.setAddress("BA"+i);
-		person.setGender("Male");
-		return person;
+	public PersonVOV2 createV2(PersonVOV2 person) {
+		Person entity = converter.convertVoToEntity(person);
+		return converter.convertEntityToVO(repository.save(entity));
 	}
-	
 
+	public PersonVO update(PersonVO person) {
+		Person entity = repository.findById(person.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+		entity.setFirstName(person.getFirstName());
+		entity.setLastName(person.getLastName());
+		entity.setAddress(person.getAddress());
+		entity.setGender(person.getGender());
+		return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+	}
+
+	public void delete(Long id) {
+		Person entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+		repository.delete(entity);
+	}
+
+	public PersonVO findById(Long id) {
+		return DozerConverter.parseObject(repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this id")), PersonVO.class);
+	}
+
+	public List<PersonVO> findAll() {
+		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
+	}
 
 }
